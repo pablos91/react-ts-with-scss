@@ -123,33 +123,6 @@ module.exports = function(
     fs.unlinkSync(templateDependenciesPath);
   }
 
-  const additionalPackages = [
-    '@types/node@8.0.47',
-    '@types/react@15.5.6',
-    '@types/react-dom@15.5.6',
-    '@types/jest@21.1.5',
-    '@types/jquery@2.0.48',
-    '@types/react-router-dom@4.0.6',
-    '@types/react-router@4.0.15',
-    'bluebird@3.5.0',
-    'jquery@2.2.4',
-    'mobx@3.3.0',
-    'mobx-react@4.3.3',
-    'react-router@4.2.0',
-    'react-router-dom@4.2.2',
-    'semantic-ui-css@2.2.12',
-    'semantic-ui-react@0.75.1'
-  ];
-
-  console.log(`Installing ${additionalPackages.join(', ')} ${command}...`);
-  console.log();
-
-  const proc = spawn.sync(command, args.concat(additionalPackages), { stdio: 'inherit' });
-  if (proc.status !== 0) {
-    console.error(`\`${command} ${args.concat(additionalPackages).join(' ')}\` failed`);
-    return;
-  }
-
   // Install react and react-dom for backward compatibility with old CRA cli
   // which doesn't install react and react-dom along with react-scripts
   // or template is presetend (via --internal-testing-template)
@@ -157,13 +130,40 @@ module.exports = function(
     console.log(`Installing react and react-dom using ${command}...`);
     console.log();
 
-    const proc = spawn.sync(command, args.concat(['react@15.6.1', 'react-dom@15.6.1']), {
+    const proc = spawn.sync(command, args.concat(['react@15.6.2', 'react-dom@15.6.2']), {
       stdio: 'inherit',
     });
     if (proc.status !== 0) {
       console.error(`\`${command} ${args.join(' ')}\` failed`);
       return;
     }
+  }
+
+  const additionalPackages = [
+    '@types/node@8.0.47',
+    '@types/react@15.6.11',
+    '@types/react-dom@15.5.6',
+    '@types/jest@21.1.5',
+    '@types/jquery@2.0.48',
+    '@types/react-router-dom@4.0.8',
+    '@types/react-router@4.0.20',
+    'bluebird@3.5.0',
+    'jquery@2.2.4',
+    'mobx@3.3.0',
+    'mobx-react@4.3.3',
+    'react-router@4.2.0',
+    'react-router-dom@4.2.2',
+    'semantic-ui-css@2.2.12',
+    'semantic-ui-react@0.77.1'
+  ];
+
+  console.log(`Installing additional packages using ${command}...`);
+  console.log();
+
+  const proc = spawn.sync(command, args.concat(additionalPackages), { stdio: 'inherit' });
+  if (proc.status !== 0) {
+    console.error(`\`${command} ${args.concat(additionalPackages).join(' ')}\` failed`);
+    return;
   }
 
   // Display the most elegant way to cd.
